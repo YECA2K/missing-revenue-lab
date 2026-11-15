@@ -1597,6 +1597,23 @@ dialog ol {
   margin-bottom: 0;
 }
 @media (max-width: 380px) {
+  .heading-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .view-switch {
+    align-self: flex-end;
+  }
+  .metric {
+    padding: 11px;
+  }
+  .metric strong {
+    font-size: 19px;
+  }
+  .topbar .repo-link {
+    display: none;
+  }
   .breadcrumb {
     font-size: 9px;
   }

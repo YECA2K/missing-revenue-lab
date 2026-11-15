@@ -98,7 +98,14 @@ def main():
         assert page.locator("#walkthrough-video").evaluate("video => video.paused")
         for width in [320, 768, 1024, 1280]:
             page.set_viewport_size({"width": width, "height": 900})
-            assert page.evaluate("document.documentElement.scrollWidth <= innerWidth"), f"Horizontal overflow at {width}px"
+            fits = page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+            if not fits:
+                detail = page.evaluate("""() => [...document.querySelectorAll('body *')].map(el => ({
+                    tag:el.tagName, id:el.id, cls:el.className.baseVal ?? el.className,
+                    right:Math.round(el.getBoundingClientRect().right)
+                })).filter(el => el.right > innerWidth && ['TD','TH','TR','TABLE','TBODY','THEAD'].indexOf(el.tag) < 0).slice(0,20)""")
+                page.screenshot(path=str(args.output / f"overflow-{width}.png"), full_page=True)
+                raise AssertionError(f"Horizontal overflow at {width}px: {detail}")
         assert not errors, errors
         browser.close()
     print("PASS: responsive layout, navigation, evidence, checks, hints, reference gate, notes persistence, export, video playback and console.")
