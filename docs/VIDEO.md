@@ -64,7 +64,7 @@ Now try the incidents yourself. Write down your hypothesis, repair the learner f
 
 The lab itself needs no external packages. Asset production is optional development work.
 Install `requirements-media.txt` in an isolated environment. Capture screenshots with
-`python tools/browser_check.py --start-server`. On Windows, use `tools/narrate.ps1`
+`python tools/browser_check.py --start-server --output docs/media`. On Windows, use `tools/narrate.ps1`
 with `docs/video-script.json` and a project-local work directory to generate WAV files.
 It uses the installed Microsoft Hazel Desktop voice; choose another installed voice if needed.
 Then run `python tools/render_video.py --work PATH_TO_WAV_DIRECTORY`.

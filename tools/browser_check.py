@@ -16,7 +16,7 @@ def main():
     parser.add_argument("--url", default="http://127.0.0.1:8765")
     parser.add_argument("--browser-channel", default="msedge")
     parser.add_argument("--start-server", action="store_true", help="Start a temporary loopback server on a free port")
-    parser.add_argument("--output", type=Path, default=Path("docs/media"))
+    parser.add_argument("--output", type=Path, default=Path("work/browser-qa"))
     args = parser.parse_args()
     if args.start_server:
         sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
