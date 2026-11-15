@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#101519" />
+    <title>Missing Revenue Lab · Investigation workspace</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='12' fill='%23b9f478'/%3E%3Cpath d='M10 27V13h5l5 8 5-8h5v14h-5v-6l-5 7-5-7v6' fill='%23101519'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <svg
+      class="svg-library"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <symbol id="i-grid" viewBox="0 0 24 24">
+        <rect x="3" y="3" width="7" height="7" rx="2" />
+        <rect x="14" y="3" width="7" height="7" rx="2" />
+        <rect x="3" y="14" width="7" height="7" rx="2" />
+        <rect x="14" y="14" width="7" height="7" rx="2" />
+      </symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24">
+        <path d="M5 12h14m-6-6 6 6-6 6" />
+      </symbol>
+      <symbol id="i-check" viewBox="0 0 24 24">
+        <path d="m5 12 4 4L19 6" />
+      </symbol>
+      <symbol id="i-refresh" viewBox="0 0 24 24">
+        <path d="M20 8a8 8 0 1 0 0 8M20 3v5h-5" />
+      </symbol>
+      <symbol id="i-code" viewBox="0 0 24 24">
+        <path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-15-2 18" />
+      </symbol>
+      <symbol id="i-book" viewBox="0 0 24 24">
+        <path
+          d="M12 5v16M3 3c4-1 7 0 9 2 2-2 5-3 9-2v15c-4-1-7 0-9 2-2-2-5-3-9-2Z"
+        />
+      </symbol>
+      <symbol id="i-download" viewBox="0 0 24 24">
+        <path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5" />
+      </symbol>
+      <symbol id="i-copy" viewBox="0 0 24 24">
+        <rect x="8" y="8" width="12" height="13" rx="2" />
+        <path d="M16 8V3H3v13h5" />
+      </symbol>
+    </svg>
+    <a class="skip-link" href="#main">Skip to investigation</a>
+    <aside class="sidebar" aria-label="Lab navigation">
+      <a class="brand" href="/#revenue" aria-label="Missing Revenue Lab home"
+        ><span class="brandmark">m<span>r</span></span
+        ><span
+          >missing revenue<span class="brand-sub"
+            >AN ENGINEERING LAB</span
+          ></span
+        ></a
+      >
+      <div class="workspace-label">
+        YOUR WORKSPACE <span class="tiny-dot"></span>
+      </div>
+      <div class="nav-label">INVESTIGATIONS <span>03</span></div>
+      <nav id="case-nav" aria-label="Choose an incident"></nav>
+      <div class="sidebar-guide">
+        <span class="mini-label">THE APPROACH</span>
+        <h3>Follow the evidence.</h3>
+        <p>Reproduce. Investigate.<br />Repair. Prove it.</p>
+        <button id="guide-button" class="text-button">
+          Getting started <svg><use href="#i-arrow" /></svg></button
+        ><button id="watch-video" class="text-button video-link">
+          Solution walkthrough <span>↗</span>
+        </button>
+      </div>
+      <footer class="sidebar-footer">
+        <span class="avatar">Y</span
+        ><span>YECA2K<small>Independent engineering lab</small></span
+        ><span class="local-dot" title="Runs on your computer"></span>
+      </footer>
+    </aside>
+    <div class="shell">
+      <header class="topbar">
+        <div class="breadcrumb">
+          Workspace <span>/</span> <strong id="crumb">INC-001</strong>
+        </div>
+        <div class="topbar-right">
+          <span class="local-label"
+            ><span class="local-dot"></span> LOCAL SESSION</span
+          ><button
+            id="quick-guide"
+            class="icon-button"
+            aria-label="Getting started"
+            title="Getting started"
+          >
+            <svg><use href="#i-book" /></svg></button
+          ><button
+            id="export-button"
+            class="icon-button"
+            aria-label="Download investigation notes"
+            title="Download investigation notes"
+          >
+            <svg><use href="#i-download" /></svg></button
+          ><a
+            class="repo-link"
+            href="https://github.com/YECA2K/missing-revenue-lab"
+            target="_blank"
+            rel="noopener noreferrer"
+            >View repository <span>↗</span></a
+          >
+        </div>
+      </header>
+      <main id="main" tabindex="-1">
+        <div id="error-banner" class="error-banner" role="alert" hidden></div>
+        <div class="heading-row">
+          <div class="eyebrow">
+            <span class="pill">LIVE WORKSPACE</span
+            ><span id="case-number">INCIDENT 001 / 003</span>
+          </div>
+          <div class="view-switch" aria-label="Implementation">
+            <button id="workspace-button" class="selected" aria-pressed="true">
+              Your code</button
+            ><button id="reference-button" aria-pressed="false">
+              Reference <span>↗</span>
+            </button>
+          </div>
+        </div>
+        <section class="hero" aria-labelledby="case-title">
+          <div class="hero-copy">
+            <div class="case-meta">
+              <span id="category">Incremental ingestion</span><span>·</span
+              ><span id="duration">45–90 min</span>
+            </div>
+            <h1 id="case-title">
+              The missing revenue<span class="accent">.</span>
+            </h1>
+            <p id="summary">
+              Two successful loads. One missing order. A €5,000 gap nobody can
+              explain.
+            </p>
+            <div class="hero-actions">
+              <button id="run-button" class="primary-button">
+                <svg><use href="#i-refresh" /></svg><span>Run checks</span
+                ><kbd>R</kbd></button
+              ><span class="edit-path"
+                >Edit <code id="edit-path">lab/pipeline.py</code></span
+              >
+            </div>
+          </div>
+          <div class="signal-art" aria-hidden="true">
+            <div class="signal-label">
+              <span class="tiny-dot"></span> EXECUTION ≠ CORRECTNESS
+            </div>
+            <svg viewBox="0 0 340 118">
+              <path
+                class="chart-grid"
+                d="M0 20h340M0 59h340M0 98h340M30 0v118M100 0v118M170 0v118M240 0v118M310 0v118"
+              />
+              <path
+                class="chart-source"
+                d="M0 92h60V70h60V50h60V34h60V17h100"
+              />
+              <path class="chart-actual" d="M0 92h60V70h60V50h60V34h160" />
+              <circle cx="240" cy="34" r="5" />
+              <circle class="chart-end" cx="240" cy="17" r="4" />
+            </svg>
+            <div class="signal-legend">
+              <span><i class="legend-source"></i>Source of truth</span
+              ><span><i class="legend-actual"></i>Reported value</span>
+            </div>
+          </div>
+        </section>
+        <section class="metrics" aria-label="Incident metrics">
+          <article class="metric">
+            <span>Expected value <span class="metric-icon">↗</span></span
+            ><strong id="expected-value">—</strong
+            ><small>Source contract control total</small>
+          </article>
+          <article class="metric">
+            <span>Reported value <span class="metric-icon">⌁</span></span
+            ><strong id="actual-value">—</strong
+            ><small id="actual-caption">From your current code</small>
+          </article>
+          <article class="metric discrepancy">
+            <span>Discrepancy <span class="metric-icon">△</span></span
+            ><strong id="gap-value">—</strong
+            ><small id="gap-caption">Reconciliation required</small>
+          </article>
+          <article class="metric">
+            <span>Acceptance checks <span class="metric-icon">✓</span></span
+            ><strong id="check-count">— <span>/ —</span></strong
+            ><small id="checks-caption">Run against your workspace</small>
+          </article>
+        </section>
+        <div class="investigation-grid">
+          <section class="workbench panel">
+            <div class="panel-top">
+              <div>
+                <span class="mini-label">INVESTIGATION WORKBENCH</span>
+                <h2>Make the numbers agree.</h2>
+              </div>
+              <span id="status-badge" class="status-badge"
+                >Needs investigation</span
+              >
+            </div>
+            <div class="tabs" role="tablist" aria-label="Workbench views">
+              <button
+                role="tab"
+                id="tab-evidence"
+                aria-controls="view-evidence"
+                aria-selected="true"
+                tabindex="0"
+                data-tab="evidence"
+              >
+                Evidence <span id="table-count">3</span></button
+              ><button
+                role="tab"
+                id="tab-checks"
+                aria-controls="view-checks"
+                aria-selected="false"
+                tabindex="-1"
+                data-tab="checks"
+              >
+                Checks <span id="check-tab-count">8</span></button
+              ><button
+                role="tab"
+                id="tab-notes"
+                aria-controls="view-notes"
+                aria-selected="false"
+                tabindex="-1"
+                data-tab="notes"
+              >
+                Your notes
+              </button>
+            </div>
+            <div
+              id="view-evidence"
+              class="tab-panel"
+              role="tabpanel"
+              aria-labelledby="tab-evidence"
+            >
+              <div class="evidence-toolbar">
+                <label for="table-select">DATASET</label
+                ><select id="table-select"></select
+                ><span id="row-count" class="row-count"></span>
+              </div>
+              <div
+                class="table-scroll"
+                tabindex="0"
+                role="region"
+                aria-label="Evidence data table"
+              >
+                <table id="evidence-table"></table>
+              </div>
+              <div class="table-footer">
+                <span
+                  ><span class="local-dot"></span> Synthetic data · read-only
+                  evidence</span
+                ><span>Amounts stored in cents</span>
+              </div>
+            </div>
+            <div
+              id="view-checks"
+              class="tab-panel"
+              role="tabpanel"
+              aria-labelledby="tab-checks"
+              hidden
+            >
+              <p class="section-description">
+                Failing checks are the investigation. Edit the Python file,
+                save, then run checks again.
+              </p>
+              <div id="checks-list" class="checks-list"></div>
+            </div>
+            <div
+              id="view-notes"
+              class="tab-panel notes-panel"
+              role="tabpanel"
+              aria-labelledby="tab-notes"
+              hidden
+            >
+              <label for="notes">Your root-cause investigation</label>
+              <p class="section-description">
+                What happened? What proves it? How does your repair prevent it?
+              </p>
+              <textarea
+                id="notes"
+                placeholder="Hypothesis:&#10;&#10;Evidence:&#10;&#10;Repair:&#10;&#10;Tradeoffs and limitations:"
+              ></textarea>
+              <div class="notes-footer">
+                <span id="notes-status">Saved in this browser only.</span
+                ><button id="notes-export" class="text-button">
+                  Export Markdown <svg><use href="#i-download" /></svg>
+                </button>
+              </div>
+            </div>
+          </section>
+          <aside class="incident-rail">
+            <section class="panel brief-panel">
+              <span class="mini-label">YOUR MISSION</span>
+              <h2 id="question">Where did the money go?</h2>
+              <ol id="tasks" class="mission-list"></ol>
+              <div class="contract-box">
+                <button
+                  id="contract-toggle"
+                  class="contract-toggle"
+                  aria-expanded="false"
+                  aria-controls="contract-content"
+                >
+                  <svg><use href="#i-book" /></svg>Read the source contract
+                  <span>+</span>
+                </button>
+                <ul id="contract-content" hidden></ul>
+              </div>
+            </section>
+            <section class="panel hint-panel">
+              <div class="hint-heading">
+                <span class="mini-label">A NUDGE, NOT THE ANSWER</span
+                ><span id="hint-count">0 / 4</span>
+              </div>
+              <div id="hint-content">
+                <p>
+                  Form a hypothesis first.<br />Reveal one clue when you need
+                  it.
+                </p>
+              </div>
+              <button id="hint-button" class="secondary-button">
+                Reveal next hint <svg><use href="#i-arrow" /></svg>
+              </button>
+            </section>
+          </aside>
+        </div>
+        <section class="panel timeline-panel">
+          <div class="timeline-heading">
+            <span class="mini-label">INCIDENT TIMELINE</span
+            ><span>Fictional events · source timestamps</span>
+          </div>
+          <div id="timeline" class="timeline"></div>
+        </section>
+        <section id="solution-panel" class="panel solution-panel" hidden>
+          <span class="mini-label">REFERENCE WALKTHROUGH · SPOILERS</span>
+          <h2>The repair, and its limits.</h2>
+          <p id="solution-text"></p>
+          <p id="limitation-text" class="muted"></p>
+          <code id="solution-command"></code>
+        </section>
+        <footer class="main-footer">
+          <span>Built by <strong>YECA2K</strong> with Codex assistance.</span
+          ><span
+            >No cloud. No Docker. Just evidence.<span class="footer-version"
+              >v1.0</span
+            ></span
+          >
+        </footer>
+        <div
+          id="live-status"
+          class="sr-only"
+          role="status"
+          aria-live="polite"
+        ></div>
+      </main>
+    </div>
+    <dialog id="reference-dialog">
+      <div class="dialog-mark">↗</div>
+      <span class="mini-label">CONTAINS SPOILERS</span>
+      <h2>Inspect the reference?</h2>
+      <p>
+        This runs the supplied solution. Your Python files stay unchanged. Try
+        your own investigation first.
+      </p>
+      <div class="dialog-actions">
+        <button id="cancel-reference" class="secondary-button">
+          Keep investigating</button
+        ><button id="confirm-reference" class="primary-button">
+          Show reference
+        </button>
+      </div>
+    </dialog>
+    <dialog id="guide-dialog">
+      <span class="mini-label">WELCOME TO THE LAB</span>
+      <h2>A green job can still be wrong.</h2>
+      <p>
+        Choose an incident. Inspect the source contract and evidence. Edit the
+        indicated Python file in your editor, save it, and return here to run
+        the checks.
+      </p>
+      <ol>
+        <li>Use integer cents for money.</li>
+        <li>Keep the public function interface unchanged.</li>
+        <li>Do not change acceptance tests to hide a failure.</li>
+        <li>Record your reasoning in Your notes.</li>
+      </ol>
+      <p>
+        No files are edited by this dashboard. Notes live in your browser and
+        can be exported. The reference contains spoilers.
+      </p>
+      <button id="close-guide" class="primary-button">
+        Start investigating <svg><use href="#i-arrow" /></svg></button
+      ><button id="watch-video-mobile" class="text-button video-link">
+        Watch solution video · spoilers ↗
+      </button>
+    </dialog>
+    <dialog id="video-dialog">
+      <div class="video-dialog-heading">
+        <div>
+          <span class="mini-label">SOLUTION WALKTHROUGH · SPOILERS</span>
+          <h2>Three incidents. Explained.</h2>
+        </div>
+        <button
+          id="close-video"
+          class="secondary-button"
+          aria-label="Close walkthrough video"
+        >
+          Close ×
+        </button>
+      </div>
+      <video
+        id="walkthrough-video"
+        controls
+        playsinline
+        preload="none"
+        poster="/walkthrough-poster.png"
+      >
+        <source src="/walkthrough.mp4" type="video/mp4" />
+        Your browser cannot play this video. Download
+        docs/media/solution-walkthrough.mp4 from the repository.
+      </video>
+      <p>
+        4½ minutes · synthetic narration · captions included · actual dashboard
+        captures and annotated repairs.
+      </p>
+    </dialog>
+  </body>
+</html>

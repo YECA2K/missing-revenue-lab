@@ -1,0 +1,203 @@
+1
+00:00:00,150 --> 00:00:05,492
+A pipeline can finish successfully and still produce the wrong numbers.
+
+2
+00:00:05,492 --> 00:00:12,775
+In Missing Revenue Lab, the source reports one hundred thousand euros, but the warehouse reports
+
+3
+00:00:12,775 --> 00:00:14,232
+ninety five thousand.
+
+4
+00:00:14,232 --> 00:00:21,516
+This fictional incident gives you the code, evidence, and tests to investigate the missing five
+
+5
+00:00:21,516 --> 00:00:22,487
+thousand euros.
+
+6
+00:00:23,587 --> 00:00:29,682
+Clone the repository and run python dash m lab serve dash dash open.
+
+7
+00:00:29,682 --> 00:00:34,839
+The dashboard runs on your own computer with Python and SQLite.
+
+8
+00:00:34,839 --> 00:00:39,059
+No Docker, cloud account, or API key is required.
+
+9
+00:00:39,059 --> 00:00:46,560
+Read the source contract, inspect the evidence, and edit the indicated Python file in your editor.
+
+10
+00:00:47,660 --> 00:00:51,905
+The first delivery advances the checkpoint to ten o'clock.
+
+11
+00:00:51,905 --> 00:00:58,035
+A different order arrives in the second delivery with that same source timestamp.
+
+12
+00:00:58,035 --> 00:01:05,110
+The loader selects only timestamps strictly greater than the checkpoint, so it silently excludes the
+
+13
+00:01:05,110 --> 00:01:06,053
+new order.
+
+14
+00:01:06,053 --> 00:01:11,712
+Source update time does not tell you which identities have already arrived.
+
+15
+00:01:12,812 --> 00:01:18,400
+Changing greater than to greater than or equal is not enough.
+
+16
+00:01:18,400 --> 00:01:23,989
+It can replay orders, and it still misses arbitrarily late records.
+
+17
+00:01:23,989 --> 00:01:29,578
+Our source delivers complete extracts, so the reference processes every record.
+
+18
+00:01:29,578 --> 00:01:32,626
+Order identity is a primary key.
+
+19
+00:01:32,626 --> 00:01:38,214
+An upsert replaces an existing order only with a newer version.
+
+20
+00:01:38,214 --> 00:01:41,263
+Duplicate deliveries no longer create revenue.
+
+21
+00:01:42,363 --> 00:01:49,949
+The reference now reports one hundred thousand euros, and all eight acceptance checks pass.
+
+22
+00:01:49,949 --> 00:01:56,994
+The checks also exercise duplicate rows, repeated deliveries, corrected amounts, stale versions, and
+
+23
+00:01:56,994 --> 00:01:58,619
+older new identities.
+
+24
+00:01:58,619 --> 00:02:02,954
+Use the reference view to inspect the result.
+
+25
+00:02:02,954 --> 00:02:06,748
+It does not replace your learner code.
+
+26
+00:02:06,748 --> 00:02:09,999
+Your own repair must pass independently.
+
+27
+00:02:11,099 --> 00:02:14,701
+The second incident is a reporting grain problem.
+
+28
+00:02:14,701 --> 00:02:22,356
+One hundred and fifty euros of orders minus twenty euros of refunds should produce one hundred and
+
+29
+00:02:22,356 --> 00:02:23,257
+thirty euros.
+
+30
+00:02:23,257 --> 00:02:29,111
+But joining two items and two refunds creates four rows for one order.
+
+31
+00:02:29,111 --> 00:02:35,415
+The query repeats the order amount and reports four hundred and ten euros overall.
+
+32
+00:02:36,515 --> 00:02:43,135
+Aggregate refunds to one row per order before joining them to the orders table.
+
+33
+00:02:43,135 --> 00:02:47,391
+Then sum each order amount minus its refund total.
+
+34
+00:02:47,391 --> 00:02:51,174
+The item table is unnecessary for this metric.
+
+35
+00:02:51,174 --> 00:02:54,956
+Do not use sum distinct on monetary values.
+
+36
+00:02:54,956 --> 00:03:00,158
+Two legitimate orders or refunds can have exactly the same amount.
+
+37
+00:03:00,158 --> 00:03:02,522
+All eight checks now pass.
+
+38
+00:03:03,622 --> 00:03:09,718
+The third incident uses a fixed business offset of UTC plus two hours.
+
+39
+00:03:09,718 --> 00:03:16,753
+An order at ten thirty PM UTC on June fourteenth belongs to June fifteenth locally.
+
+40
+00:03:16,753 --> 00:03:23,318
+Another at ten fifteen PM UTC on June fifteenth belongs to the next day.
+
+41
+00:03:23,318 --> 00:03:29,884
+Slicing the timestamp's date reports two hundred and fifty euros instead of three hundred.
+
+42
+00:03:30,984 --> 00:03:39,583
+Parse a timezone aware datetime, convert it to the business offset, and compare its local date.
+
+43
+00:03:39,583 --> 00:03:43,882
+Reject missing or invalid timezones instead of guessing.
+
+44
+00:03:43,882 --> 00:03:49,256
+All eleven checks pass, including midnight boundaries and negative offsets.
+
+45
+00:03:49,256 --> 00:03:53,018
+This exercise deliberately uses a fixed offset.
+
+46
+00:03:53,018 --> 00:04:00,004
+Real regional calendars with daylight saving require named timezones and a timezone database.
+
+47
+00:04:01,104 --> 00:04:03,774
+Now try the incidents yourself.
+
+48
+00:04:03,774 --> 00:04:10,180
+Write down your hypothesis, repair the learner files, and rerun the checks.
+
+49
+00:04:10,180 --> 00:04:14,984
+Export your investigation notes and explain the remaining limitations.
+
+50
+00:04:14,984 --> 00:04:20,322
+Missing Revenue Lab is published by YECA2K with Codex assistance.
+
+51
+00:04:20,322 --> 00:04:27,796
+The data is synthetic, the challenges are free, and the reference solutions are included.

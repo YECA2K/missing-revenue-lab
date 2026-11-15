@@ -1,0 +1,4 @@
+# Optional asset-production tools. The lab itself has no third-party dependencies.
+pillow==13.0.0
+imageio-ffmpeg==0.8.1
+playwright==1.65.2

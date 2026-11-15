@@ -1,0 +1,56 @@
+[
+  {
+    "label": "THE INCIDENT", "title": "Green jobs. Wrong numbers.", "kind": "dashboard", "image": "dashboard.png",
+    "narration": "A pipeline can finish successfully and still produce the wrong numbers. In Missing Revenue Lab, the source reports one hundred thousand euros, but the warehouse reports ninety five thousand. This fictional incident gives you the code, evidence, and tests to investigate the missing five thousand euros.",
+    "takeaway": "Execution success is not data correctness."
+  },
+  {
+    "label": "START LOCALLY", "title": "One command. Three investigations.", "kind": "commands",
+    "narration": "Clone the repository and run python dash m lab serve dash dash open. The dashboard runs on your own computer with Python and SQLite. No Docker, cloud account, or API key is required. Read the source contract, inspect the evidence, and edit the indicated Python file in your editor.",
+    "lines": ["git clone https://github.com/YECA2K/missing-revenue-lab.git", "cd missing-revenue-lab", "python -m lab doctor", "python -m lab serve --open"],
+    "takeaway": "The dashboard evaluates your code. It does not edit it."
+  },
+  {
+    "label": "INC-001 / ROOT CAUSE", "title": "Same timestamp. Different arrival.", "kind": "boundary",
+    "narration": "The first delivery advances the checkpoint to ten o'clock. A different order arrives in the second delivery with that same source timestamp. The loader selects only timestamps strictly greater than the checkpoint, so it silently excludes the new order. Source update time does not tell you which identities have already arrived.",
+    "takeaway": "A timestamp-only checkpoint cannot prove completeness."
+  },
+  {
+    "label": "INC-001 / REPAIR", "title": "Identity first. Newer versions win.", "kind": "upsert",
+    "narration": "Changing greater than to greater than or equal is not enough. It can replay orders, and it still misses arbitrarily late records. Our source delivers complete extracts, so the reference processes every record. Order identity is a primary key. An upsert replaces an existing order only with a newer version. Duplicate deliveries no longer create revenue.",
+    "lines": ["order_id TEXT PRIMARY KEY", "", "INSERT INTO orders VALUES (?, ?, ?)", "ON CONFLICT(order_id) DO UPDATE SET", "  amount_cents = excluded.amount_cents,", "  updated_at = excluded.updated_at", "WHERE excluded.updated_at > orders.updated_at"],
+    "takeaway": "This repair depends on complete extracts. It is not a universal CDC design."
+  },
+  {
+    "label": "INC-001 / VERIFY", "title": "Prove the repair, not just the total.", "kind": "dashboard", "image": "reference.png",
+    "narration": "The reference now reports one hundred thousand euros, and all eight acceptance checks pass. The checks also exercise duplicate rows, repeated deliveries, corrected amounts, stale versions, and older new identities. Use the reference view to inspect the result. It does not replace your learner code. Your own repair must pass independently.",
+    "takeaway": "Eight checks. Zero discrepancy. Your workspace stays unchanged."
+  },
+  {
+    "label": "INC-002 / ROOT CAUSE", "title": "Two items × two refunds = four rows.", "kind": "fanout",
+    "narration": "The second incident is a reporting grain problem. One hundred and fifty euros of orders minus twenty euros of refunds should produce one hundred and thirty euros. But joining two items and two refunds creates four rows for one order. The query repeats the order amount and reports four hundred and ten euros overall.",
+    "takeaway": "Before summing money, establish what one joined row represents."
+  },
+  {
+    "label": "INC-002 / REPAIR", "title": "Aggregate before you join.", "kind": "sql",
+    "narration": "Aggregate refunds to one row per order before joining them to the orders table. Then sum each order amount minus its refund total. The item table is unnecessary for this metric. Do not use sum distinct on monetary values. Two legitimate orders or refunds can have exactly the same amount. All eight checks now pass.",
+    "lines": ["WITH refund_totals AS (", "  SELECT order_id, SUM(amount_cents) AS amount_cents", "  FROM refunds GROUP BY order_id", ")", "SELECT SUM(o.amount_cents - COALESCE(r.amount_cents, 0))", "FROM orders o", "LEFT JOIN refund_totals r ON r.order_id = o.order_id"],
+    "takeaway": "One order contributes once. Equal monetary values remain distinct records."
+  },
+  {
+    "label": "INC-003 / ROOT CAUSE", "title": "UTC midnight is not business midnight.", "kind": "timezone",
+    "narration": "The third incident uses a fixed business offset of UTC plus two hours. An order at ten thirty PM UTC on June fourteenth belongs to June fifteenth locally. Another at ten fifteen PM UTC on June fifteenth belongs to the next day. Slicing the timestamp's date reports two hundred and fifty euros instead of three hundred.",
+    "takeaway": "Convert the instant first. Choose the calendar date second."
+  },
+  {
+    "label": "INC-003 / REPAIR", "title": "Parse. Convert. Then group.", "kind": "python",
+    "narration": "Parse a timezone aware datetime, convert it to the business offset, and compare its local date. Reject missing or invalid timezones instead of guessing. All eleven checks pass, including midnight boundaries and negative offsets. This exercise deliberately uses a fixed offset. Real regional calendars with daylight saving require named timezones and a timezone database.",
+    "lines": ["timestamp = datetime.fromisoformat(", "    row['created_at'].replace('Z', '+00:00')", ")", "if timestamp.utcoffset() is None:", "    raise ValueError('Timezone offset required')", "if timestamp.astimezone(business_zone).date() == target:", "    total += row['amount_cents']"],
+    "takeaway": "Fixed offsets are not a substitute for daylight-saving rules."
+  },
+  {
+    "label": "YOUR INVESTIGATION", "title": "Follow the evidence. Ship the fix.", "kind": "outro",
+    "narration": "Now try the incidents yourself. Write down your hypothesis, repair the learner files, and rerun the checks. Export your investigation notes and explain the remaining limitations. Missing Revenue Lab is published by YECA2K with Codex assistance. The data is synthetic, the challenges are free, and the reference solutions are included.",
+    "takeaway": "github.com/YECA2K/missing-revenue-lab"
+  }
+]

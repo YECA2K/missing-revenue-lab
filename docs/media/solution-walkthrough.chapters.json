@@ -1,0 +1,45 @@
+{
+  "duration_seconds": 268.75,
+  "chapters": [
+    {
+      "start_seconds": 0,
+      "title": "Green jobs. Wrong numbers."
+    },
+    {
+      "start_seconds": 23.44,
+      "title": "One command. Three investigations."
+    },
+    {
+      "start_seconds": 47.51,
+      "title": "Same timestamp. Different arrival."
+    },
+    {
+      "start_seconds": 72.66,
+      "title": "Identity first. Newer versions win."
+    },
+    {
+      "start_seconds": 102.21,
+      "title": "Prove the repair, not just the total."
+    },
+    {
+      "start_seconds": 130.95,
+      "title": "Two items \u00d7 two refunds = four rows."
+    },
+    {
+      "start_seconds": 156.37,
+      "title": "Aggregate before you join."
+    },
+    {
+      "start_seconds": 183.47,
+      "title": "UTC midnight is not business midnight."
+    },
+    {
+      "start_seconds": 210.83,
+      "title": "Parse. Convert. Then group."
+    },
+    {
+      "start_seconds": 240.95,
+      "title": "Follow the evidence. Ship the fix."
+    }
+  ]
+}

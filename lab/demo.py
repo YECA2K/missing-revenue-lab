@@ -1,6 +1,7 @@
 """Run with python -m lab.demo from the repository root."""
 import argparse
 import sqlite3
+from contextlib import closing
 from lab.fixtures import snapshots
 
 
@@ -12,7 +13,7 @@ def main():
         from solutions.pipeline import Pipeline
     else:
         from lab.pipeline import Pipeline
-    with sqlite3.connect(":memory:") as db:
+    with closing(sqlite3.connect(":memory:")) as db:
         pipeline = Pipeline(db)
         first, second = snapshots()
         for name, records in [("Initial source extract delivered at 10:05", first),
